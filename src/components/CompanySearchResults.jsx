@@ -8,6 +8,7 @@ import { companySearchResultsAction } from "../redux/actions";
 const CompanySearchResults = () => {
   const dispatch = useDispatch();
   const params = useParams();
+  const favourites = useSelector((state) => state.favourites.companies);
   const companyJobs = useSelector(
     (state) => state.companySearch.companyResults
   );
