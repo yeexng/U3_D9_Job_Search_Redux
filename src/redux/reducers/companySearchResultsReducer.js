@@ -1,4 +1,8 @@
-import { GET_JOBS_BY_COMPANY } from "../actions";
+import {
+  GET_JOBS_BY_COMPANY,
+  GET_JOBS_ERROR,
+  GET_JOBS_LOADING,
+} from "../actions";
 
 const initialState = {
   companyResults: [],
@@ -10,6 +14,17 @@ const companySearchResultsReducer = (state = initialState, action) => {
       return {
         ...state,
         companyResults: action.payload,
+      };
+
+    case GET_JOBS_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload,
+      };
+    case GET_JOBS_ERROR:
+      return {
+        ...state,
+        isError: action.payload,
       };
 
     default:

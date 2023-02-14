@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Spinner,
+  Alert,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { mainSearchResultsAction } from "../redux/actions";
@@ -19,49 +27,52 @@ const MainSearch = () => {
     e.preventDefault();
     dispatch(mainSearchResultsAction(query));
   };
-  // const baseEndpoint =
-  //   "https://strive-benchmark.herokuapp.com/api/jobs?search=";
 
-  //   try {
-  //     const response = await fetch(baseEndpoint + query + "&limit=20");
-  //     if (response.ok) {
-  //       const { data } = await response.json();
-  //       setJobs(data);
-  //     } else {
-  //       alert("Error fetching results");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // moved to action/index.js
+  const applicationSpinner = useSelector((state) => state.mainSearch.isLoading);
+  const applicationError = useSelector((state) => state.mainSearch.isError);
   return (
     <Container>
-      <Row>
-        <Col xs={10} className="mx-auto my-3">
-          <h1>Remote Jobs Search</h1>
-          <Button onClick={() => navigate("/favourites")}>Favourites</Button>
-        </Col>
-        <Col xs={10} className="mx-auto">
-          <Form onSubmit={handleSubmit}>
-            <Form.Control
-              type="search"
-              value={query}
-              onChange={handleChange}
-              placeholder="type and press Enter"
-            />
-          </Form>
-        </Col>
-        <Col xs={10} className="mx-auto mb-5">
-          {jobsFromRedux ? (
-            jobsFromRedux.map((jobData) => (
-              <Job key={jobData._id} data={jobData} />
-            ))
-          ) : (
-            <h1>Loading...</h1>
-          )}
-        </Col>
-      </Row>
+      {
+        <Row>
+          <Col xs={10} className="mx-auto my-3">
+            <h1>Remote Jobs Search</h1>
+            <Button onClick={() => navigate("/favourites")}>Favourites</Button>
+          </Col>
+          <Col xs={10} className="mx-auto">
+            <Form onSubmit={handleSubmit}>
+              <Form.Control
+                type="search"
+                value={query}
+                onChange={handleChange}
+                placeholder="type and press Enter"
+              />
+            </Form>
+          </Col>
+          <Col xs={10} className="mx-auto mb-5">
+            {jobsFromRedux ? (
+              jobsFromRedux.map((jobData) => (
+                <Job key={jobData._id} data={jobData} />
+              ))
+            ) : (
+              <h1>Loading...</h1>
+            )}
+          </Col>
+        </Row>
+      }
+      {applicationSpinner && (
+        <div className="d-flex justify-content-center align-items-center">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      )}
+      {applicationError && (
+        <div>
+          <img
+            className="img-fluid"
+            src="https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg?w=2000"
+            alt=""
+          />
+        </div>
+      )}
     </Container>
   );
 };
