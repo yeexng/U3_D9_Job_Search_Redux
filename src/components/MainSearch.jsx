@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  Spinner,
-  Alert,
-} from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { mainSearchResultsAction } from "../redux/actions";
@@ -49,6 +41,20 @@ const MainSearch = () => {
             </Form>
           </Col>
           <Col xs={10} className="mx-auto mb-5">
+            {applicationSpinner && (
+              <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" variant="primary" />
+              </div>
+            )}
+            {applicationError && (
+              <div>
+                <img
+                  className="img-fluid"
+                  src="https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg?w=2000"
+                  alt=""
+                />
+              </div>
+            )}
             {jobsFromRedux ? (
               jobsFromRedux.map((jobData) => (
                 <Job key={jobData._id} data={jobData} />
@@ -59,20 +65,6 @@ const MainSearch = () => {
           </Col>
         </Row>
       }
-      {applicationSpinner && (
-        <div className="d-flex justify-content-center align-items-center">
-          <Spinner animation="border" variant="primary" />
-        </div>
-      )}
-      {applicationError && (
-        <div>
-          <img
-            className="img-fluid"
-            src="https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg?w=2000"
-            alt=""
-          />
-        </div>
-      )}
     </Container>
   );
 };
